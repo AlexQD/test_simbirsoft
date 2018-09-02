@@ -1,0 +1,29 @@
+<div class="form-group">
+    <label>Email</label>
+    <input class="form-control" name="email" [(ngModel)]="field.email" #email="ngModel"
+           required email />
+    <div [hidden]="email.valid || email.untouched" class="alert alert-danger">
+        Некорректный email
+    </div>
+</div>
+<div class="form-group">
+    <label>Описание</label>
+    <textarea class="form-control"  name="description" [(ngModel)]="field.description" #description="ngModel" required >
+        </textarea>
+    <div [hidden]="description.valid || description.untouched" class="alert alert-danger">
+        Это поле обязательное для заполнения
+    </div>
+</div>
+<div class="form-group">
+    <label>Выберете файл для загрузки</label><br/>
+    <input type="file"
+           name ="file"
+           (change)="handleFileInput($event.target.files)">
+</div>
+<div class="form-group">
+    <button [disabled]="description.invalid || email.invalid || (fileToUpload ==null) "
+            class="btn btn-default" (click)="submit(field)">Отправить</button>
+</div>
+<div *ngIf="done">
+    <div>{{receivedData.msg}}</div>
+</div>
