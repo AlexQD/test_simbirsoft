@@ -11,22 +11,11 @@ class FileTableSeeder extends Seeder
      */
     public function run()
     {
-//        $faker = Faker\Factory::create();
-//        for ($i = 0; $i < 4800000; $i++) {
-//            //factory(App\File::class, 10000)->create();
-//            $name_file = "public/upload/".hash('md5',$faker->name);
-//            $email = $faker->safeEmail;
-//            DB::table('files')->insert([ //,
-//                'name_file' => $name_file,
-//                'description' => $faker->text(150),
-//                'email' => $email,
-//                'hash_user' => hash('md5',$name_file),
-//                'hash_file' =>hash('md5',$email),
-//            ]);
-//        }
 
-        for ($i = 0; $i < 7; $i++) {
-            factory(App\File::class, 10000)->create();
+        for ($i = 0; $i < 100; $i++) {
+            DB::transaction(function () {
+                factory(App\File::class, 10000)->create();
+            });
         }
 
 

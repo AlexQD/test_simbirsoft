@@ -40,14 +40,12 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        //dump($request);
         $file = $request->file('file');
         $file_size_mb=$file->getSize()/ 1048576;
         if(($file_size_mb>150)||($file_size_mb<100)) {
             return response()->json(['msg' => 'Мин. размер файла 150Мб, мак 200Мб']);
         }
         $upload_folder = 'public/upload';
-        //$filename = $request->file('file')->getClientOriginalName();
         $file_name = Storage::putFile($upload_folder, $file);
         if ($file_name) {
             $model = new File();
@@ -58,7 +56,6 @@ class FileController extends Controller
             $model->hash_file = hash('md5', $file_name);
             $model->save();
             Mail::to($model->email)->send(new URLFile($model->hash_user,$model->hash_file));
-            print_r(new URLFile($model->hash_user,$model->hash_file));
             return response()->json(['msg' => 'файл успешно загружен, в скором времени вы получите email сообщение с сылкой на файл'],200);
 
 
@@ -98,14 +95,18 @@ class FileController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request,[
+           'email'=>'required|email',
+            'description' => 'required'
+        ]);
         $model =File::find($request->id);
         $model->email = $request->email;
         $model->description = $request->description;
         if ($model->save()) {
             echo "Изменения применены";
-            return redirect()->back()->with('error', 'Данные изменены');
+            return redirect()->back()->with('msg', 'Данные изменены');
         }else{
-            return redirect()->back()->with('error', 'Ошибка изменения данных');
+            return redirect()->back()->withInput();
         }
     }
 
@@ -118,8 +119,10 @@ class FileController extends Controller
     public function destroy($id)
     {
         $model =File::find($id);
-        $model->delete();
-        echo "Запись удалена";
+        if($model->delete()){
+            return view('default.adminDelete');
+        }
+
     }
 
     public function download($hash_user, $hash_file)
@@ -133,7 +136,6 @@ class FileController extends Controller
     }
 
     public function admin(){
-        //$file_model = DB::table('files')->paginate(2);
         $file_model = File::paginate(20);
 
         return view('default.admin',['data'=>$file_model]);
