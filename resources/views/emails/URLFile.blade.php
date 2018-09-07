@@ -1,3 +1,3 @@
 <div>
-    Ссылка на файл : {{url('/')}}file/{{$user_hash}}/{{$file_hash}}
+    Ссылка на файл : {{url('/')}}/uploaded/{{$user_hash}}/{{$file_hash}}
 </div>

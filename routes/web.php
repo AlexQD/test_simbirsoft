@@ -13,7 +13,7 @@
 
 Route::get('/', 'FileController@index')->name('home');
 Route::post('/addfile','FileController@store');
-Route::get('/file/{hash_user}/{hash_file}','FileController@download');
+Route::get('/uploaded/{hash_user}/{hash_file}','FileController@download');
 
 Route::get('/admin',['uses'=>'FileController@admin', 'as'=>'admin','middleware'=>['web','auth']]);
 Route::get('/admin/edit/{id}',['uses'=>'FileController@edit', 'as'=>'adminEdit','middleware'=>['web','auth']]);

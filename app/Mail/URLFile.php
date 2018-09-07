@@ -32,7 +32,7 @@ class URLFile extends Mailable
      */
     public function build()
     {
-        return $this->from('test-project-laravel@yandex.ru')->view('emails.URLFile')
+        return $this->from('test-project-laravel2@yandex.ru')->view('emails.URLFile')
             ->with(['user_hash'=>$this->user_hash,'file_hash'=>$this->file_hash]);
     }
 }
