@@ -42,8 +42,8 @@ class FileController extends Controller
     {
         $file = $request->file('file');
         $file_size_mb=$file->getSize()/ 1048576;
-        if(($file_size_mb>150)||($file_size_mb<100)) {
-            return response()->json(['msg' => 'Мин. размер файла 150Мб, мак 200Мб']);
+        if(($file_size_mb>env('MAX_FILE_SIZE'))||($file_size_mb<env('MIN_FILE_SIZE'))) {
+            return response()->json(['msg' => "Мин. размер файла ".env('MIN_FILE_SIZE')."Мб, мак ".env('MAX_FILE_SIZE')."Мб"]);
         }
         $upload_folder = 'public/upload';
         $file_name = Storage::putFile($upload_folder, $file);
