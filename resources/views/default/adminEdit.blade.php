@@ -24,6 +24,7 @@
                             </ul>
                         </div>
                     @endif
+                <a href="{{route('admin')}}">Назад</a>
 
             </div>
         </div>

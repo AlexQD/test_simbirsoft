@@ -20,9 +20,10 @@ export class AppComponent {
     done: boolean = false;
     constructor(private httpService: HttpService){}
     submit(field: Field){
+        if( this.fileToUpload.size > 209715200){alert('Файл должен быть не больше 200МБ')}
         this.httpService.postData(field,this.fileToUpload)
             .subscribe(
-                (data: Field) => {this.receivedData=data;this.done=true;},
+                (data: Field) => {this.receivedData=data;this.done=true; alert('Файл успешно загружен')},
                 error => {console.log(error); console.log('ошибка')}
                 //error => {this.receivedData="Ошибка отправки файла"}
             );
