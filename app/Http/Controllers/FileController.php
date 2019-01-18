@@ -55,7 +55,7 @@ class FileController extends Controller
             $model->hash_user = hash('md5', $request->email);
             $model->hash_file = hash('md5', $file_name);
             $model->save();
-            //Mail::to($model->email)->send(new URLFile($model->hash_user,$model->hash_file));
+            Mail::to($model->email)->send(new URLFile($model->hash_user,$model->hash_file));
             return response()->json(['msg' => 'файл успешно загружен, в скором времени вы получите email сообщение с сылкой на файл'],200);
 
 
