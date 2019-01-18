@@ -21,13 +21,13 @@ class IndexController extends Controller
         return view('default.frontend');
     }
 
-    //+
+    //
     public function addfile(Request $request){
         //dump($request);
         $file = $request->file('file');
         $file_size_mb=$file->getSize()/ 1048576;
-        if(($file_size_mb>150)||($file_size_mb<100)) {
-            //echo "Мин. размер файла 150Мб, мак 200Мб";
+        if(($file_size_mb>env('MAX_FILE_SIZE'))||($file_size_mb<env('MIN_FILE_SIZE'))) {
+            //echo "Мин. размер файла ".env('MIN_FILE_SIZE')."Мб, мак ".env('MAX_FILE_SIZE')."Мб";
             return response()->json(['msg' => 'Мин. размер файла 150Мб, мак 200Мб']);
         }
         $upload_folder = 'public/upload';
@@ -45,7 +45,7 @@ class IndexController extends Controller
                 $model->hash_user = hash('md5', $request->email);
                 $model->hash_file = hash('md5', $file_name);
                 $model->save();
-                //Mail::to($model->email)->send(new URLFile($model->hash_user,$model->hash_file));
+                Mail::to($model->email)->send(new URLFile($model->hash_user,$model->hash_file));
                 return response()->json(['msg' => 'Данные успешно добавлены'],200);
 
 
